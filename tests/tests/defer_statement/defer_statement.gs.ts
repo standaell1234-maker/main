@@ -1,0 +1,13 @@
+// Generated file based on defer_statement.go
+// Updated when compliance tests are re-run, DO NOT EDIT!
+
+import * as $ from "@goscript/builtin/index.js"
+
+export async function main(): Promise<void> {
+	using __defer = new $.DisposableStack();
+	__defer.defer(() => {
+		$.println("deferred")
+	});
+	$.println("main")
+}
+

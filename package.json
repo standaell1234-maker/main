@@ -1,0 +1,112 @@
+{
+  "name": "goscript",
+  "description": "Go to TypeScript transpiler",
+  "version": "0.0.72",
+  "author": {
+    "name": "Aperture Robotics LLC.",
+    "email": "support@aperture.us",
+    "url": "http://aperture.us"
+  },
+  "contributors": [
+    {
+      "name": "Christian Stewart",
+      "email": "christian@aperture.us",
+      "url": "http://github.com/paralin"
+    }
+  ],
+  "repository": {
+    "url": "git+ssh://git@github.com/aperturerobotics/goscript.git"
+  },
+  "type": "module",
+  "bin": {
+    "goscript": "./cmd/goscript/main.js"
+  },
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/compiler/index.d.ts",
+        "default": "./dist/compiler/index.js"
+      }
+    },
+    "./compiler": {
+      "import": {
+        "types": "./dist/compiler/index.d.ts",
+        "default": "./dist/compiler/index.js"
+      }
+    },
+    "./gs/builtin": {
+      "import": {
+        "types": "./dist/gs/builtin/index.d.ts",
+        "default": "./dist/gs/builtin/index.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "npm run build:updategover && tsc -p tsconfig.build.json",
+    "build:updategover": "node -e \"const fs = require('fs'); const { execSync } = require('child_process'); const goVersion = execSync('go mod edit -json', { encoding: 'utf8' }); const goData = JSON.parse(goVersion); const version = goData.Go; const runtimePath = 'gs/runtime/runtime.ts'; const content = fs.readFileSync(runtimePath, 'utf8'); const updatedContent = content.replace(/export const GOVERSION = 'go[^']*'/, \\`export const GOVERSION = 'go\\${version}'\\`); fs.writeFileSync(runtimePath, updatedContent);\"",
+    "prepublishOnly": "npm run build",
+    "example": "cd ./example/simple && bash run.bash",
+    "test": "npm run test:go && npm run test:js",
+    "test:go": "go test ./...",
+    "test:js": "npm run typecheck && vitest run",
+    "test:browser": "bun run scripts/generate-browser-tests.ts && vitest run --config vitest.browser.config.ts",
+    "test:browser:ui": "bun run scripts/generate-browser-tests.ts && vitest --config vitest.browser.config.ts --ui",
+    "typecheck": "tsgo --noEmit -p tsconfig.build.json",
+    "format": "npm run format:go && npm run format:js && npm run format:config",
+    "format:config": "prettier --write tsconfig.json package.json",
+    "format:go": "gofumpt -w .",
+    "format:js": "prettier --write './{src,gs,example}/**/(*.ts|*.tsx|*.html|*.css|*.scss)'",
+    "release": "npm run release:version && npm run release:commit",
+    "release:minor": "npm run release:version:minor && npm run release:commit",
+    "release:version": "npm version patch -m \"release: v%s\" --no-git-tag-version",
+    "release:version:minor": "npm version minor -m \"release: v%s\" --no-git-tag-version",
+    "release:commit": "git reset && git add package.json && git commit -s -m \"release: v$(node -p \"require('./package.json').version\")\" && git tag v$(node -p \"require('./package.json').version\")",
+    "release:publish": "git push && git push --tags",
+    "lint": "npm run lint:go && npm run lint:js",
+    "lint:go": "golangci-lint run .",
+    "lint:js": "eslint -c eslint.config.mjs ./",
+    "lint:js:fix": "eslint -c eslint.config.mjs ./ --fix",
+    "website:build": "bun run website:manifest && bun run website:examples && cd website && bun run build",
+    "website:manifest": "bun run scripts/generate-test-manifest.ts",
+    "website:examples": "bun run scripts/generate-examples.ts",
+    "website:dev": "cd website && bun run dev",
+    "website:serve": "cd website && bun run preview",
+    "prepare": "husky",
+    "precommit": "lint-staged"
+  },
+  "files": [
+    "!**/*.tsbuildinfo",
+    "dist",
+    "cmd",
+    "compiler",
+    "gs",
+    "!tests",
+    "go.mod",
+    "go.sum",
+    "LICENSE",
+    "README.md"
+  ],
+  "lint-staged": {
+    "package.json": "prettier --config .prettierrc.yaml --write",
+    "./{src,builtin,example}/**/(*.ts|*.tsx|*.html|*.css|*.scss)": "prettier --config .prettierrc.yaml --write"
+  },
+  "devDependencies": {
+    "@aptre/protobuf-es-lite": "^0.5.2",
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^25.0.3",
+    "@typescript-eslint/eslint-plugin": "^8.50.1",
+    "@typescript-eslint/parser": "^8.50.1",
+    "@typescript/native-preview": "^7.0.0-dev.20251226.1",
+    "@vitest/browser": "^4.0.16",
+    "@vitest/browser-playwright": "^4.0.16",
+    "@vitest/browser-preview": "^4.0.16",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.0.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.50.1",
+    "vitest": "^4.0.16"
+  }
+}

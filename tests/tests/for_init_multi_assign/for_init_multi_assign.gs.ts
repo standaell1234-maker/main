@@ -1,0 +1,14 @@
+// Generated file based on for_init_multi_assign.go
+// Updated when compliance tests are re-run, DO NOT EDIT!
+
+import * as $ from "@goscript/builtin/index.js"
+
+export async function main(): Promise<void> {
+
+	// Modify j to see a clearer change in output
+	for (let i = 0, j = 1; i < 2; i++) {
+		$.println(i, j)
+		j += 10 // Modify j to see a clearer change in output
+	}
+}
+

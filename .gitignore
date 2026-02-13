@@ -1,0 +1,15 @@
+.#*
+node_modules
+*.swp
+.DS_Store
+vendor
+dist
+buildtarget
+.idea
+output
+out
+.claude
+tests/tests/tests.browser.test.ts
+tests/tests/__screenshots__
+website/public/goscript.wasm
+website/public/wasm_exec.js

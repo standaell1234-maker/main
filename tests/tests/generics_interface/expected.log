@@ -1,0 +1,10 @@
+=== Generic Interface Test ===
+Int ValueContainer result: 42
+Int ValueContainer size: 1
+String ValueContainer result: hello
+String ValueContainer size: 1
+String comparison equal: true
+String comparison not equal: false
+String comparison -1: -1
+String comparison 1: 1
+String comparison 0: 0

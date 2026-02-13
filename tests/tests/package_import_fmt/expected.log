@@ -1,0 +1,17 @@
+Hello World
+Welcome to Go 1.21
+This is println
+Sprint result: Sprint result
+Sprintf result: Number: 42, String: test
+Sprintln result:Sprintln result
+Error: error code: 404
+Boolean: true
+Integer: 123
+Float: 3.14159
+String: hello
+Type: int
+Value: [1 2 3]
+Width: '   hi'
+Precision: '3.14'
+Both: ' 3.14'
+test finished

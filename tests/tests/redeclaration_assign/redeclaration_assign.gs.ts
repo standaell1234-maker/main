@@ -1,0 +1,28 @@
+// Generated file based on redeclaration_assign.go
+// Updated when compliance tests are re-run, DO NOT EDIT!
+
+import * as $ from "@goscript/builtin/index.js"
+
+export function returnsOneIntOneBool(): [number, boolean] {
+	return [7, true]
+}
+
+export async function main(): Promise<void> {
+	let i: number = 0
+	$.println("initial i:", i) // Use i to avoid unused error before :=
+
+	// i already exists from the var declaration above.
+	// err is a new variable being declared.
+	let err: boolean
+	[i, err] = returnsOneIntOneBool()
+
+	$.println("after assign i:", i) // Use i
+	// Use err
+	if (err) {
+		// Use err
+		$.println("err is true")
+	} else {
+		$.println("err is false")
+	}
+}
+
