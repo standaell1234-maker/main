@@ -1,0 +1,57 @@
+// Generated file based on generics_leading_int.go
+// Updated when compliance tests are re-run, DO NOT EDIT!
+
+import * as $ from "@goscript/builtin/index.js"
+
+// leadingInt consumes the leading [0-9]* from s.
+export function leadingInt<bytes extends $.Bytes | string>(s: bytes): [number, bytes, boolean] {
+	let x: number = 0
+	let rem: bytes = null as any
+	let err: boolean = false
+	{
+		let i = 0
+
+		// overflow
+
+		// overflow
+		for (; i < $.len(s); i++) {
+			let c = $.indexString(s, i)
+			if (c < 48 || c > 57) {
+				break
+			}
+
+			// overflow
+			if (x > Math.trunc(Number.MAX_SAFE_INTEGER / 10)) {
+				// overflow
+				return [0, $.sliceStringOrBytes(s, $.len(s), undefined), true]
+			}
+			x = x * 10 + (c as number) - 48
+
+			// overflow
+			if (x > Number.MAX_SAFE_INTEGER) {
+				// overflow
+				return [0, $.sliceStringOrBytes(s, $.len(s), undefined), true]
+			}
+		}
+		return [x, $.sliceStringOrBytes(s, i, undefined), false]
+	}
+}
+
+export async function main(): Promise<void> {
+	let [x1, rem1, err1] = leadingInt($.stringToBytes("123abc456"))
+	$.println(x1, $.bytesToString(rem1), err1)
+
+	let [x2, rem2, err2] = leadingInt("456def123")
+	$.println(x2, rem2, err2)
+
+	let [x3, rem3, err3] = leadingInt("abc")
+	$.println(x3, rem3, err3)
+
+	// Test overflow
+	let [x4, rem4, err4] = leadingInt("999999999999999999999999999999")
+	$.println(x4, rem4, err4)
+
+	let [x5, rem5, err5] = leadingInt<string>("123")
+	$.println(x5, rem5, err5)
+}
+

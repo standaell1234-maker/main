@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["es2022", "esnext.disposable", "dom"],
+    "types": ["node"],
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "sourceMap": true,
+    "paths": {
+      "@goscript/*": ["./gs/*"]
+    }
+  },
+  "include": ["compiler", "gs", "tests"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts"]
+}

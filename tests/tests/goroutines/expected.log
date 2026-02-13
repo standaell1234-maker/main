@@ -1,0 +1,12 @@
+0 Main: Starting workers
+1 Main: Workers started
+10 Worker 0 starting
+11 Worker 1 starting
+12 Worker 2 starting
+20 Worker 0 done
+21 Worker 1 done
+22 Worker 2 done
+40 Another worker: test
+50 Anonymous function worker
+100 Main: All workers completed
+done

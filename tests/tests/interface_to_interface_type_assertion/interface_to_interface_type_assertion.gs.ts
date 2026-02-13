@@ -1,0 +1,79 @@
+// Generated file based on interface_to_interface_type_assertion.go
+// Updated when compliance tests are re-run, DO NOT EDIT!
+
+import * as $ from "@goscript/builtin/index.js"
+
+export type MyInterface = null | {
+	Method1(): number
+}
+
+$.registerInterfaceType(
+  'main.MyInterface',
+  null, // Zero value for interface is null
+  [{ name: "Method1", args: [], returns: [{ type: { kind: $.TypeKind.Basic, name: "int" } }] }]
+);
+
+export type MyOtherInterface = null | {
+	Method1(): number
+}
+
+$.registerInterfaceType(
+  'main.MyOtherInterface',
+  null, // Zero value for interface is null
+  [{ name: "Method1", args: [], returns: [{ type: { kind: $.TypeKind.Basic, name: "int" } }] }]
+);
+
+export class MyStruct {
+	public get Value(): number {
+		return this._fields.Value.value
+	}
+	public set Value(value: number) {
+		this._fields.Value.value = value
+	}
+
+	public _fields: {
+		Value: $.VarRef<number>;
+	}
+
+	constructor(init?: Partial<{Value?: number}>) {
+		this._fields = {
+			Value: $.varRef(init?.Value ?? 0)
+		}
+	}
+
+	public clone(): MyStruct {
+		const cloned = new MyStruct()
+		cloned._fields = {
+			Value: $.varRef(this._fields.Value.value)
+		}
+		return cloned
+	}
+
+	public Method1(): number {
+		const m = this
+		return m.Value
+	}
+
+	// Register this type with the runtime type system
+	static __typeInfo = $.registerStructType(
+	  'main.MyStruct',
+	  new MyStruct(),
+	  [{ name: "Method1", args: [], returns: [{ type: { kind: $.TypeKind.Basic, name: "int" } }] }],
+	  MyStruct,
+	  {"Value": { kind: $.TypeKind.Basic, name: "int" }}
+	);
+}
+
+export async function main(): Promise<void> {
+	let i: MyInterface = null
+	let s = $.markAsStructValue(new MyStruct({Value: 10}))
+	i = $.markAsStructValue(s.clone())
+
+	let { ok: ok } = $.typeAssert<MyOtherInterface>(i, 'main.MyOtherInterface')
+	if (ok) {
+		$.println("Type assertion successful")
+	} else {
+		$.println("Type assertion failed")
+	}
+}
+
